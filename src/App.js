@@ -1,4 +1,4 @@
-import { TEST, EnterField } from './UI';
+import { ResponsesShowcase, Options, EnterField } from './UI';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 
@@ -6,7 +6,12 @@ function App() {
 
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
- 
+    const [options, setOptions] = useState({
+        length: 'short',
+        style: 'narrative',
+        tone: 'informative'
+    })
+
     return (
         <Box sx={{
             display: 'flex',
@@ -14,8 +19,9 @@ function App() {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <TEST prompt={prompt} response={response}/>
-            <EnterField setPrompt={setPrompt} setResponse={setResponse}/>
+            <ResponsesShowcase prompt={prompt} response={response}/>
+            <Options options={options} setOptions={setOptions}/>
+            <EnterField options={options} setPrompt={setPrompt} setResponse={setResponse}/>
         </Box>
     );
 }
