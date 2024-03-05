@@ -6,12 +6,66 @@ const boxSize = 400;
 const margin = 10;
 const inputSize = 2*boxSize + 6*margin
 
+const createPrompt = (input, options) => {
+
+    let result = 'Generate me Instagram post suggestion that is, ';
+
+    result += input;
+
+    switch(options['length']){
+        case 'medium':
+            result += ', where you will ensure that your prompt output is in range of 50-150 words of length'; 
+            break;
+        case 'long':
+            result += ', where you will ensure that your prompt output is above of 150 words of length';
+            break;
+        default:
+            result += ', where you will ensure that your prompt output is under 50 words in length';
+    }
+
+    switch(options['style']){
+        case 'listicle':
+            result += ', organized as a list of points, tips, or ideas, which is easy to scan and read';
+            break;
+        case 'qa':
+            result += ', framed as questions and answers, great for educational content or addressing common queries';
+            break;
+        case 'review':
+            result += ', offering opinions or evaluations about products, services, or experiences';
+            break;
+        case 'howto':
+            result += ', providing step-by-step instructions or guidance on achieving a particular task';
+            break;
+        default:
+            result += ', telling a story or sharing an experience, with a beginning, middle and end'
+    }
+
+    switch(options['tone']){
+        case 'casual':
+            result += ', where tone is casual which is a relaxed and conversational tone, great for engaging with followers in a friendly manner.'
+            break;
+        case 'professional':
+            result += ', where tone is professional, formal and polished, ideal for business accounts or professional branding.'
+            break;
+        case 'humorous':
+            result += ', where tone is humorous, light-hearted and funny, perfect for entertainment or lifestyle brands.'
+            break;
+        case 'inspirational':
+            result += ', where tone is inspirational, motivational and uplifting, aimed at encouraging followers.'
+            break;
+        default:
+            result += ', where tone is informative which is straightforward and educational, suitable for sharing facts or knowledge.'
+    }
+
+    return result;
+}
+
 export const ResponsesShowcase = ({ prompt, response }) => {
 
     const boxstyle = {
         height: `${boxSize}px`,
         width: `${boxSize}px`,
-        padding: '10px',
+        paddingTop: '15px',
         margin: '10px',
         border: '2px solid black',
         borderRadius: '10px'
@@ -28,9 +82,28 @@ export const ResponsesShowcase = ({ prompt, response }) => {
                 TODO
             </Box>
             <Box sx={boxstyle}>
-                TODO<br/>
-                <strong>Your prompt:</strong> {prompt}<br/><br/><br/>
-                <strong>My response:</strong> {response}
+                <TextField
+                    sx={{
+                        '& fieldset': { border: 'none' },
+                        width: '100%'
+                    }}
+                    label='Your prompt:' 
+                    value={prompt}
+                    multiline
+                    minRows={3}
+                    maxRows={3}
+                />
+                <TextField
+                    sx={{
+                        '& fieldset': { border: 'none' },
+                        width: '100%'
+                    }}
+                    label='Response:' 
+                    value={response}
+                    multiline
+                    minRows={11}
+                    maxRows={11}
+                />
             </Box>
         </Box>
     )
@@ -100,60 +173,6 @@ export const EnterField = ({ options, setPrompt, setResponse }) => {
 
     const inputRef = useRef();
 
-    const createPrompt = (input, options) => {
-
-        let result = 'Generate me Instagram post suggestion that is, ';
-
-        result += input;
-
-        switch(options['length']){
-            case 'medium':
-                result += ', where you will ensure that your prompt output is in range of 50-150 words of length'; 
-                break;
-            case 'long':
-                result += ', where you will ensure that your prompt output is above of 150 words of length';
-                break;
-            default:
-                result += ', where you will ensure that your prompt output is under 50 words in length';
-        }
-
-        switch(options['style']){
-            case 'listicle':
-                result += ', organized as a list of points, tips, or ideas, which is easy to scan and read';
-                break;
-            case 'qa':
-                result += ', framed as questions and answers, great for educational content or addressing common queries';
-                break;
-            case 'review':
-                result += ', offering opinions or evaluations about products, services, or experiences';
-                break;
-            case 'howto':
-                result += ', providing step-by-step instructions or guidance on achieving a particular task';
-                break;
-            default:
-                result += ', telling a story or sharing an experience, with a beginning, middle and end'
-        }
-
-        switch(options['tone']){
-            case 'casual':
-                result += ', where tone is casual which is a relaxed and conversational tone, great for engaging with followers in a friendly manner.'
-                break;
-            case 'professional':
-                result += ', where tone is professional, formal and polished, ideal for business accounts or professional branding.'
-                break;
-            case 'humorous':
-                result += ', where tone is humorous, light-hearted and funny, perfect for entertainment or lifestyle brands.'
-                break;
-            case 'inspirational':
-                result += ', where tone is inspirational, motivational and uplifting, aimed at encouraging followers.'
-                break;
-            default:
-                result += ', where tone is informative which is straightforward and educational, suitable for sharing facts or knowledge.'
-        }
-
-        return result;
-    }
-
     const onEnter = async (input) => {
         setPrompt(input);
 
@@ -162,6 +181,8 @@ export const EnterField = ({ options, setPrompt, setResponse }) => {
         // Github does not allow 
         const trick = 'sk-OLzMRKSrmaqFMZfBMS4';
         const trick2 = 'uT3BlbkFJPQxu4hM6CrYb75mPstiC';
+
+        setResponse('*loading*');
 
         const OpenAi = new OpenAI({
             // Hosted on AWS S3, cannot hide secret keys
