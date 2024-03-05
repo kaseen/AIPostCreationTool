@@ -1,10 +1,10 @@
 import OpenAI from 'openai';
 import { Box, FormControl, FormLabel, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const boxSize = 400;
 const margin = 10;
-const inputSize = 2*boxSize + 6*margin
+const inputSize = 2*boxSize + 3*margin
 
 const createPrompt = (input, options) => {
 
@@ -60,12 +60,11 @@ const createPrompt = (input, options) => {
     return result;
 }
 
-export const ResponsesShowcase = ({ prompt, response }) => {
+export const ResponsesShowcase = ({ prompt, response, picutureURL }) => {
 
     const boxstyle = {
         height: `${boxSize}px`,
         width: `${boxSize}px`,
-        paddingTop: '15px',
         margin: '10px',
         border: '2px solid black',
         borderRadius: '10px'
@@ -79,15 +78,17 @@ export const ResponsesShowcase = ({ prompt, response }) => {
             justifyContent: 'center'
         }}>
             <Box sx={boxstyle}>
-                TODO
+                <img src={picutureURL} alt='ai-generated-pic' />
             </Box>
             <Box sx={boxstyle}>
+                <Box sx={{height: '20px'}}></Box>
                 <TextField
                     sx={{
                         '& fieldset': { border: 'none' },
                         width: '100%'
                     }}
-                    label='Your prompt:' 
+                    label='Your prompt:'
+                    InputLabelProps={{ shrink: true }}
                     value={prompt}
                     multiline
                     minRows={3}
@@ -98,7 +99,8 @@ export const ResponsesShowcase = ({ prompt, response }) => {
                         '& fieldset': { border: 'none' },
                         width: '100%'
                     }}
-                    label='Response:' 
+                    label='Response:'
+                    InputLabelProps={{ shrink: true }}
                     value={response}
                     multiline
                     minRows={11}
@@ -169,8 +171,10 @@ export const Options = ({ options, setOptions }) => {
     )
 }
 
-export const EnterField = ({ options, setPrompt, setResponse }) => {
+export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) => {
 
+    const [errorText, setErrorText] = useState();
+    const [errorPic, setErrorPic] = useState();
     const inputRef = useRef();
 
     const onEnter = async (input) => {
@@ -190,34 +194,59 @@ export const EnterField = ({ options, setPrompt, setResponse }) => {
             dangerouslyAllowBrowser: true
         });
 
-        const response = await OpenAi.chat.completions.create({
-            messages: [{ role: 'user', content: prompt }],
-            model: 'gpt-3.5-turbo'
-        });
+        try{
+            const responseText = await OpenAi.chat.completions.create({
+                messages: [{ role: 'user', content: prompt }],
+                model: 'gpt-3.5-turbo'
+            });
 
-        setResponse(response.choices[0]?.message?.content);
+            setResponse(responseText.choices[0]?.message?.content);
+        }catch(e){
+            setErrorText(e.message);
+        }
+
+        try{
+            const responsePic = await OpenAi.images.generate({
+                model: 'dall-e-2',
+                prompt: input,
+                size: '512x512',
+                n: 1
+            });
+
+            setPictureURL(responsePic.data[0].url);
+        }catch(e){
+            setErrorPic(e.message);
+        }
     }
 
     return (
-        <TextField
-            inputRef={inputRef}
-            inputProps={{ min: 0, style: { textAlign: 'center' }}}
-            onKeyDown={(ev) => {
-                if(ev.key === 'Enter'){
-                    ev.preventDefault();
-                    onEnter(inputRef.current.value);
-                }
-            }}
-            sx={{
-                border: '2px solid black',
-                borderRadius: '10px',
-                margin: '10px',
-                width: inputSize
-            }}
-            autoComplete='off'
-            multiline
-            maxRows={4}
-            placeholder='Enter your prompt'
-        />
+        <Box sx={{
+            width: `${inputSize+20}px`
+        }}>
+            <TextField
+                inputRef={inputRef}
+                inputProps={{ min: 0, style: { textAlign: 'center' }}}
+                onKeyDown={(ev) => {
+                    if(ev.key === 'Enter'){
+                        ev.preventDefault();
+                        onEnter(inputRef.current.value);
+                    }
+                }}
+                sx={{
+                    border: '2px solid black',
+                    borderRadius: '10px',
+                    margin: '10px',
+                    width: inputSize
+                }}
+                autoComplete='off'
+                multiline
+                maxRows={4}
+                placeholder='Enter your prompt'
+            />
+            <br/>
+            {errorText}
+            <br/>
+            {errorPic}
+        </Box>
     )
 }

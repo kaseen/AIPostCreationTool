@@ -6,6 +6,7 @@ function App() {
 
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
+    const [picutureURL, setPictureURL] = useState('');
     const [options, setOptions] = useState({
         length: 'short',
         style: 'narrative',
@@ -17,11 +18,17 @@ function App() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            marginTop: '40px'
         }}>
-            <ResponsesShowcase prompt={prompt} response={response}/>
+            <ResponsesShowcase prompt={prompt} response={response} picutureURL={picutureURL}/>
             <Options options={options} setOptions={setOptions}/>
-            <EnterField options={options} setPrompt={setPrompt} setResponse={setResponse}/>
+            <EnterField
+                options={options}
+                setPrompt={setPrompt}
+                setResponse={setResponse}
+                setPictureURL={setPictureURL}
+            />
         </Box>
     );
 }
