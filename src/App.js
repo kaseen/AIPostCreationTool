@@ -6,7 +6,7 @@ function App() {
 
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
-
+ 
     return (
         <Box sx={{
             display: 'flex',
