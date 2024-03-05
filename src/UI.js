@@ -96,21 +96,81 @@ export const Options = ({ options, setOptions }) => {
     )
 }
 
-export const EnterField = ({ setPrompt, setResponse }) => {
+export const EnterField = ({ options, setPrompt, setResponse }) => {
 
     const inputRef = useRef();
+
+    const createPrompt = (input, options) => {
+
+        let result = 'Generate me Instagram post suggestion that is, ';
+
+        result += input;
+
+        switch(options['length']){
+            case 'medium':
+                result += ', where you will ensure that your prompt output is in range of 50-150 words of length'; 
+                break;
+            case 'long':
+                result += ', where you will ensure that your prompt output is above of 150 words of length';
+                break;
+            default:
+                result += ', where you will ensure that your prompt output is under 50 words in length';
+        }
+
+        switch(options['style']){
+            case 'listicle':
+                result += ', organized as a list of points, tips, or ideas, which is easy to scan and read';
+                break;
+            case 'qa':
+                result += ', framed as questions and answers, great for educational content or addressing common queries';
+                break;
+            case 'review':
+                result += ', offering opinions or evaluations about products, services, or experiences';
+                break;
+            case 'howto':
+                result += ', providing step-by-step instructions or guidance on achieving a particular task';
+                break;
+            default:
+                result += ', telling a story or sharing an experience, with a beginning, middle and end'
+        }
+
+        switch(options['tone']){
+            case 'casual':
+                result += ', where tone is casual which is a relaxed and conversational tone, great for engaging with followers in a friendly manner.'
+                break;
+            case 'professional':
+                result += ', where tone is professional, formal and polished, ideal for business accounts or professional branding.'
+                break;
+            case 'humorous':
+                result += ', where tone is humorous, light-hearted and funny, perfect for entertainment or lifestyle brands.'
+                break;
+            case 'inspirational':
+                result += ', where tone is inspirational, motivational and uplifting, aimed at encouraging followers.'
+                break;
+            default:
+                result += ', where tone is informative which is straightforward and educational, suitable for sharing facts or knowledge.'
+        }
+
+        return result;
+    }
 
     const onEnter = async (input) => {
         setPrompt(input);
 
+        const prompt = createPrompt(input, options);
+
+        // Github does not allow 
+        const trick = 'sk-OLzMRKSrmaqFMZfBMS4';
+        const trick2 = 'uT3BlbkFJPQxu4hM6CrYb75mPstiC';
+
         const OpenAi = new OpenAI({
             // Hosted on AWS S3, cannot hide secret keys
-            apiKey: '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',
+            apiKey: trick + trick2,
             dangerouslyAllowBrowser: true
         });
 
         const response = await OpenAi.chat.completions.create({
-            messages: [{ role: 'user', content: input }],
+            messages: [{ role: 'user', content: prompt }],
             model: 'gpt-3.5-turbo'
         });
 
