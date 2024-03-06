@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { Box, FormControl, FormLabel, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { Box, FormControl, InputLabel, TextField, Select, MenuItem } from '@mui/material';
 import { useRef, useState } from 'react';
 
 const boxSize = 400;
@@ -119,53 +119,55 @@ export const Options = ({ options, setOptions }) => {
         setOptions(tmp);
     }
 
+    const size = 140;
+
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: `${inputSize}px`
+            width: `${size+10}px`,
         }}>
-            <FormControl>
-                <FormLabel>Length</FormLabel>
-                <RadioGroup
-                    onChange={e => onOptionChange('length', e.target.value)}
-                    defaultValue='short'
-                    row
+            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+                <InputLabel>Length</InputLabel>
+                <Select
+                    defaultValue={'short'}
+                    label="Length"
+                    onChange={(e) => onOptionChange('length', e.target.value)}
                 >
-                    <FormControlLabel value='short' control={<Radio />} label='Short' />
-                    <FormControlLabel value='medium' control={<Radio />} label='Medium' />
-                    <FormControlLabel value='long' control={<Radio />} label='Long' />
-                </RadioGroup>
+                    <MenuItem value={'short'}>Short</MenuItem>
+                    <MenuItem value={'medium'}>Medium</MenuItem>
+                    <MenuItem value={'long'}>Long</MenuItem>
+                </Select>
             </FormControl>
 
-            <FormControl>
-                <FormLabel>Style</FormLabel>
-                <RadioGroup
-                    onChange={e => onOptionChange('style', e.target.value)}
-                    defaultValue='narrative'
-                    row
+            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+                <InputLabel>Style</InputLabel>
+                <Select
+                    defaultValue={'narrative'}
+                    label="Style"
+                    onChange={(e) => onOptionChange('style', e.target.value)}
                 >
-                    <FormControlLabel value='narrative' control={<Radio />} label='Narrative' />
-                    <FormControlLabel value='listicle' control={<Radio />} label='Listicle' />
-                    <FormControlLabel value='qa' control={<Radio />} label='Q&A' />
-                    <FormControlLabel value='review' control={<Radio />} label='Review' />
-                    <FormControlLabel value='howto' control={<Radio />} label='How-to' />
-                </RadioGroup>
+                    <MenuItem value={'narrative'}>Narrative</MenuItem>
+                    <MenuItem value={'listicle'}>Listicle</MenuItem>
+                    <MenuItem value={'qa'}>Q&A</MenuItem>
+                    <MenuItem value={'review'}>Review</MenuItem>
+                    <MenuItem value={'howto'}>How-to</MenuItem>
+                </Select>
             </FormControl>
 
-            <FormControl>
-                <FormLabel>Tone</FormLabel>
-                <RadioGroup
-                    onChange={e => onOptionChange('tone', e.target.value)}
-                    defaultValue='informative'
-                    row
+            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+                <InputLabel>Tone</InputLabel>
+                <Select
+                    defaultValue={'informative'}
+                    label="Tone"
+                    onChange={(e) => onOptionChange('tone', e.target.value)}
                 >
-                    <FormControlLabel value='informative' control={<Radio />} label='Informative' />
-                    <FormControlLabel value='casual' control={<Radio />} label='Casual' />
-                    <FormControlLabel value='professional' control={<Radio />} label='Professional' />
-                    <FormControlLabel value='humorous' control={<Radio />} label='Humorous' />
-                    <FormControlLabel value='inspirational' control={<Radio />} label='Inspirational' />
-                </RadioGroup>
+                    <MenuItem value={'informative'}>Informative</MenuItem>
+                    <MenuItem value={'casual'}>Casual</MenuItem>
+                    <MenuItem value={'professional'}>Professional</MenuItem>
+                    <MenuItem value={'humorous'}>Humorous</MenuItem>
+                    <MenuItem value={'inspirational'}>Inspirational</MenuItem>
+                </Select>
             </FormControl>
         </Box>
     )
@@ -182,7 +184,7 @@ export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) =
 
         const prompt = createPrompt(input, options);
 
-        // Github does not allow 
+        // Github does not allow sharing tokens explicitly
         const trick = 'sk-OLzMRKSrmaqFMZfBMS4';
         const trick2 = 'uT3BlbkFJPQxu4hM6CrYb75mPstiC';
 
@@ -209,7 +211,8 @@ export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) =
             const responsePic = await OpenAi.images.generate({
                 model: 'dall-e-2',
                 prompt: input,
-                size: '512x512',
+                size: '256x256',
+                quality: 'standard',
                 n: 1
             });
 

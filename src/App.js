@@ -7,7 +7,8 @@ function App() {
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
     const [picutureURL, setPictureURL] = useState('');
-    const [options, setOptions] = useState({
+
+    const [optionsForText, setOptionsForText] = useState({
         length: 'short',
         style: 'narrative',
         tone: 'informative'
@@ -18,13 +19,25 @@ function App() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '40px'
+            justifyContent: 'space-between',
+            marginTop: '30px'
         }}>
-            <ResponsesShowcase prompt={prompt} response={response} picutureURL={picutureURL}/>
-            <Options options={options} setOptions={setOptions}/>
+            <Box sx={{ marginBottom: '20px', fontSize: 50 }}>AI Post Creation Tool</Box>
+
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                }}
+            >
+                <Options options={optionsForText} setOptions={setOptionsForText}/>
+                <ResponsesShowcase prompt={prompt} response={response} picutureURL={picutureURL}/>
+                <Options options={optionsForText} setOptions={setOptionsForText}/>
+                
+            </Box>
+
+            
             <EnterField
-                options={options}
+                options={optionsForText}
                 setPrompt={setPrompt}
                 setResponse={setResponse}
                 setPictureURL={setPictureURL}
