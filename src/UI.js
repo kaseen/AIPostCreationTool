@@ -6,6 +6,13 @@ const boxSize = 400;
 const margin = 10;
 const inputSize = 2*boxSize + 3*margin
 
+const optionSelectSize = 140;
+const optionSelectStyle = {
+    m: 1,
+    minWidth: optionSelectSize,
+    maxWidth: optionSelectSize
+};
+
 const createPrompt = (input, options) => {
 
     let result = 'Generate me Instagram post suggestion that is, ';
@@ -111,7 +118,7 @@ export const ResponsesShowcase = ({ prompt, response, picutureURL }) => {
     )
 }
 
-export const Options = ({ options, setOptions }) => {
+export const OptionsText = ({ options, setOptions }) => {
 
     const onOptionChange = (option, setting) => {
         const tmp = options;
@@ -127,11 +134,11 @@ export const Options = ({ options, setOptions }) => {
             flexDirection: 'column',
             width: `${size+10}px`,
         }}>
-            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+            <FormControl sx={optionSelectStyle} size='small'>
                 <InputLabel>Length</InputLabel>
                 <Select
                     defaultValue={'short'}
-                    label="Length"
+                    label='Length'
                     onChange={(e) => onOptionChange('length', e.target.value)}
                 >
                     <MenuItem value={'short'}>Short</MenuItem>
@@ -140,11 +147,11 @@ export const Options = ({ options, setOptions }) => {
                 </Select>
             </FormControl>
 
-            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+            <FormControl sx={optionSelectStyle} size='small'>
                 <InputLabel>Style</InputLabel>
                 <Select
                     defaultValue={'narrative'}
-                    label="Style"
+                    label='Style'
                     onChange={(e) => onOptionChange('style', e.target.value)}
                 >
                     <MenuItem value={'narrative'}>Narrative</MenuItem>
@@ -155,11 +162,11 @@ export const Options = ({ options, setOptions }) => {
                 </Select>
             </FormControl>
 
-            <FormControl sx={{ m: 1, minWidth: size, maxWidth: size }} size="small">
+            <FormControl sx={optionSelectStyle} size='small'>
                 <InputLabel>Tone</InputLabel>
                 <Select
                     defaultValue={'informative'}
-                    label="Tone"
+                    label='Tone'
                     onChange={(e) => onOptionChange('tone', e.target.value)}
                 >
                     <MenuItem value={'informative'}>Informative</MenuItem>
@@ -167,6 +174,66 @@ export const Options = ({ options, setOptions }) => {
                     <MenuItem value={'professional'}>Professional</MenuItem>
                     <MenuItem value={'humorous'}>Humorous</MenuItem>
                     <MenuItem value={'inspirational'}>Inspirational</MenuItem>
+                </Select>
+            </FormControl>
+        </Box>
+    )
+}
+
+export const OptionsImg = ({ options, setOptions }) => {
+
+    const onOptionChange = (option, setting) => {
+        const tmp = options;
+        tmp[option] = setting;
+        setOptions(tmp);
+    }
+
+    return (
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: `${optionSelectSize+10}px`,
+        }}>
+            <FormControl sx={optionSelectStyle} size='small'>
+                <InputLabel>Colors</InputLabel>
+                <Select
+                    defaultValue={'light'}
+                    label='Colors'
+                    onChange={(e) => onOptionChange('colors', e.target.value)}
+                >
+                    <MenuItem value={'light'}>Light</MenuItem>
+                    <MenuItem value={'dark'}>Dark</MenuItem>
+                    <MenuItem value={'vibrant'}>Vibrant</MenuItem>
+                    <MenuItem value={'dreamy'}>Dreamy</MenuItem>
+                    <MenuItem value={'contrasting'}>Contrasting</MenuItem>
+                    <MenuItem value={'warm'}>Warm</MenuItem>
+                </Select>
+            </FormControl>
+
+            <FormControl sx={optionSelectStyle} size='small'>
+                <InputLabel>Lighting</InputLabel>
+                <Select
+                    defaultValue={'soft'}
+                    label='Lighting'
+                    onChange={(e) => onOptionChange('lighting', e.target.value)}
+                >
+                    <MenuItem value={'soft'}>Soft</MenuItem>
+                    <MenuItem value={'natural'}>Natural</MenuItem>
+                    <MenuItem value={'warm'}>Warm</MenuItem>
+                    <MenuItem value={'low'}>Low</MenuItem>
+                </Select>
+            </FormControl>
+
+            <FormControl sx={optionSelectStyle} size='small'>
+                <InputLabel>Elements</InputLabel>
+                <Select
+                    defaultValue={'detailed'}
+                    label='Elements'
+                    onChange={(e) => onOptionChange('elements', e.target.value)}
+                >
+                    <MenuItem value={'detailed'}>Detailed</MenuItem>
+                    <MenuItem value={'abstract'}>Abstract</MenuItem>
+                    <MenuItem value={'unusual'}>Unusual</MenuItem>
                 </Select>
             </FormControl>
         </Box>

@@ -1,4 +1,4 @@
-import { ResponsesShowcase, Options, EnterField } from './UI';
+import { ResponsesShowcase, OptionsImg, OptionsText, EnterField } from './UI';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 
@@ -12,6 +12,12 @@ function App() {
         length: 'short',
         style: 'narrative',
         tone: 'informative'
+    });
+
+    const [optionsForImg, setOptionsForImg] = useState({
+        colors: 'light',
+        lighting: 'soft',
+        elements: 'detailed'
     })
 
     return (
@@ -29,9 +35,9 @@ function App() {
                 flexDirection: 'row',
                 }}
             >
-                <Options options={optionsForText} setOptions={setOptionsForText}/>
+                <OptionsImg options={optionsForImg} setOptions={setOptionsForImg}/>
                 <ResponsesShowcase prompt={prompt} response={response} picutureURL={picutureURL}/>
-                <Options options={optionsForText} setOptions={setOptionsForText}/>
+                <OptionsText options={optionsForText} setOptions={setOptionsForText}/>
                 
             </Box>
 
