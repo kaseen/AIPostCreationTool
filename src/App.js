@@ -4,9 +4,11 @@ import { useState } from 'react';
 
 function App() {
 
+    const blankImage = 'https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png'
+
     const [prompt, setPrompt] = useState('');
     const [response, setResponse] = useState('');
-    const [picutureURL, setPictureURL] = useState('');
+    const [picutureURL, setPictureURL] = useState(blankImage);
 
     const [optionsForText, setOptionsForText] = useState({
         length: 'short',
@@ -28,7 +30,7 @@ function App() {
             justifyContent: 'space-between',
             marginTop: '30px'
         }}>
-            <Box sx={{ marginBottom: '20px', fontSize: 50 }}>AI Post Creation Tool</Box>
+            <Box sx={{ marginBottom: '20px', fontSize: 65 }}>AI Post Creation Tool</Box>
 
             <Box sx={{
                 display: 'flex',

@@ -144,7 +144,7 @@ export const ResponsesShowcase = ({ prompt, response, picutureURL }) => {
             justifyContent: 'center'
         }}>
             <Box sx={boxstyle}>
-                <img src={picutureURL} alt='ai-generated-pic' />
+                <img src={picutureURL} alt='ai'/>
             </Box>
             <Box sx={boxstyle}>
                 <Box sx={{height: '20px'}}></Box>
@@ -185,13 +185,13 @@ export const OptionsText = ({ options, setOptions }) => {
         setOptions(tmp);
     }
 
-    const size = 140;
-
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: `${size+10}px`,
+            width: `${optionSelectSize+10}px`,
+            height: '250px',
+            justifyContent: 'flex-end'
         }}>
             <FormControl sx={optionSelectStyle} size='small'>
                 <InputLabel>Length</InputLabel>
@@ -252,6 +252,8 @@ export const OptionsImg = ({ options, setOptions }) => {
             display: 'flex',
             flexDirection: 'column',
             width: `${optionSelectSize+10}px`,
+            height: '250px',
+            justifyContent: 'flex-end'
         }}>
             <FormControl sx={optionSelectStyle} size='small'>
                 <InputLabel>Colors</InputLabel>
@@ -371,7 +373,7 @@ export const EnterField = ({ optionsText, optionsImg, setPrompt, setResponse, se
                 autoComplete='off'
                 multiline
                 maxRows={4}
-                placeholder='Enter your prompt'
+                placeholder='Enter your prompt (ex. A white siamese cat drinking from a starbucks cup)'
             />
             <br/>
             {errorText}
