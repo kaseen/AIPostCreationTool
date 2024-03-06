@@ -43,7 +43,8 @@ function App() {
 
             
             <EnterField
-                options={optionsForText}
+                optionsText={optionsForText}
+                optionsImg={optionsForImg}
                 setPrompt={setPrompt}
                 setResponse={setResponse}
                 setPictureURL={setPictureURL}

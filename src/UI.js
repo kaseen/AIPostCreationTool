@@ -13,9 +13,9 @@ const optionSelectStyle = {
     maxWidth: optionSelectSize
 };
 
-const createPrompt = (input, options) => {
+const createPromptText = (input, options) => {
 
-    let result = 'Generate me Instagram post suggestion that is, ';
+    let result = 'Generate an Instagram post suggestion featuring ';
 
     result += input;
 
@@ -63,6 +63,65 @@ const createPrompt = (input, options) => {
         default:
             result += ', where tone is informative which is straightforward and educational, suitable for sharing facts or knowledge.'
     }
+
+    return result;
+}
+
+const createPromptImg = (input, options) => {
+    let result = 'Generate an Instagram post suggestion featuring ';
+
+    result += input;
+
+    result += ', with ';
+    switch(options['colors']){
+        case 'dark':
+            result += 'dark'; 
+            break;
+        case 'vibrant':
+            result += 'vibrant';
+            break;
+        case 'dreamy':
+            result += 'dreamy';
+            break;
+        case 'contrasting':
+            result += 'contrasting';
+            break;
+        case 'warm':
+            result += 'warm';
+            break;
+        default:
+            result += 'light';
+    }
+    result += ' colors';
+
+    result += ', with ';
+    switch(options['lighting']){
+        case 'natural':
+            result += 'natural'; 
+            break;
+        case 'warm':
+            result += 'warm';
+            break;
+        case 'low':
+            result += 'low';
+            break;
+        default:
+            result += 'soft';
+    }
+    result += ' lighting, ';
+
+    result += 'and ';
+    switch(options['elements']){
+        case 'abstract':
+            result += 'abstract'; 
+            break;
+        case 'unusual':
+            result += 'unusual';
+            break;
+        default:
+            result += 'detailed';
+    }
+    result +=  ' elements.';
 
     return result;
 }
@@ -240,7 +299,7 @@ export const OptionsImg = ({ options, setOptions }) => {
     )
 }
 
-export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) => {
+export const EnterField = ({ optionsText, optionsImg, setPrompt, setResponse, setPictureURL }) => {
 
     const [errorText, setErrorText] = useState();
     const [errorPic, setErrorPic] = useState();
@@ -249,7 +308,8 @@ export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) =
     const onEnter = async (input) => {
         setPrompt(input);
 
-        const prompt = createPrompt(input, options);
+        const promptText = createPromptText(input, optionsText);
+        const promptImg = createPromptImg(input, optionsImg);
 
         // Github does not allow sharing tokens explicitly
         const trick = 'sk-OLzMRKSrmaqFMZfBMS4';
@@ -265,7 +325,7 @@ export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) =
 
         try{
             const responseText = await OpenAi.chat.completions.create({
-                messages: [{ role: 'user', content: prompt }],
+                messages: [{ role: 'user', content: promptText }],
                 model: 'gpt-3.5-turbo'
             });
 
@@ -277,7 +337,7 @@ export const EnterField = ({ options, setPrompt, setResponse, setPictureURL }) =
         try{
             const responsePic = await OpenAi.images.generate({
                 model: 'dall-e-2',
-                prompt: input,
+                prompt: promptImg,
                 size: '256x256',
                 quality: 'standard',
                 n: 1
